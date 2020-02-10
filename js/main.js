@@ -1,119 +1,87 @@
-$(function() {
-  "use strict";
 
-  //------- Parallax -------//
-  skrollr.init({
-    forceHeight: false
-  });
+(function ($) {
+    "use strict";
 
-  //------- Active Nice Select --------//
-  $('select').niceSelect();
 
-  //------- hero carousel -------//
-  $(".hero-carousel").owlCarousel({
-    items:3,
-    margin: 10,
-    autoplay:false,
-    autoplayTimeout: 5000,
-    loop:true,
-    nav:false,
-    dots:false,
-    responsive:{
-      0:{
-        items:1
-      },
-      600:{
-        items: 2
-      },
-      810:{
-        items:3
-      }
-    }
-  });
-
-  //------- Best Seller Carousel -------//
-  if($('.owl-carousel').length > 0){
-    $('#bestSellerCarousel').owlCarousel({
-      loop:true,
-      margin:30,
-      nav:true,
-      navText: ["<i class='ti-arrow-left'></i>","<i class='ti-arrow-right'></i>"],
-      dots: false,
-      responsive:{
-        0:{
-          items:1
-        },
-        600:{
-          items: 2
-        },
-        900:{
-          items:3
-        },
-        1130:{
-          items:4
-        }
-      }
+    /*==================================================================
+    [ Focus input ]*/
+    $('.input100').each(function(){
+        $(this).on('blur', function(){
+            if($(this).val().trim() != "") {
+                $(this).addClass('has-val');
+            }
+            else {
+                $(this).removeClass('has-val');
+            }
+        })    
     })
-  }
-
-  //------- single product area carousel -------//
-  $(".s_Product_carousel").owlCarousel({
-    items:1,
-    autoplay:false,
-    autoplayTimeout: 5000,
-    loop:true,
-    nav:false,
-    dots:false
-  });
-
-  //------- mailchimp --------//  
-	function mailChimp() {
-		$('#mc_embed_signup').find('form').ajaxChimp();
-	}
-  mailChimp();
   
-  //------- fixed navbar --------//  
-  $(window).scroll(function(){
-    var sticky = $('.header_area'),
-    scroll = $(window).scrollTop();
-
-    if (scroll >= 100) sticky.addClass('fixed');
-    else sticky.removeClass('fixed');
-  });
-
-  //------- Price Range slider -------//
-  if(document.getElementById("price-range")){
   
-    var nonLinearSlider = document.getElementById('price-range');
-    
-    noUiSlider.create(nonLinearSlider, {
-        connect: true,
-        behaviour: 'tap',
-        start: [ 500, 4000 ],
-        range: {
-            // Starting at 500, step the value by 500,
-            // until 4000 is reached. From there, step by 1000.
-            'min': [ 0 ],
-            '10%': [ 500, 500 ],
-            '50%': [ 4000, 1000 ],
-            'max': [ 10000 ]
+    /*==================================================================
+    [ Validate ]*/
+    var input = $('.validate-input .input100');
+
+    $('.validate-form').on('submit',function(){
+        var check = true;
+
+        for(var i=0; i<input.length; i++) {
+            if(validate(input[i]) == false){
+                showValidate(input[i]);
+                check=false;
+            }
         }
+
+        return check;
     });
-  
-  
-    var nodes = [
-        document.getElementById('lower-value'), // 0
-        document.getElementById('upper-value')  // 1
-    ];
-  
-    // Display the slider value and how far the handle moved
-    // from the left edge of the slider.
-    nonLinearSlider.noUiSlider.on('update', function ( values, handle, unencoded, isTap, positions ) {
-        nodes[handle].innerHTML = values[handle];
-    });
-  
-  }
-  
-});
 
 
+    $('.validate-form .input100').each(function(){
+        $(this).focus(function(){
+           hideValidate(this);
+        });
+    });
+
+    function validate (input) {
+        if($(input).attr('type') == 'email' || $(input).attr('name') == 'email') {
+            if($(input).val().trim().match(/^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{1,5}|[0-9]{1,3})(\]?)$/) == null) {
+                return false;
+            }
+        }
+        else {
+            if($(input).val().trim() == ''){
+                return false;
+            }
+        }
+    }
+
+    function showValidate(input) {
+        var thisAlert = $(input).parent();
+
+        $(thisAlert).addClass('alert-validate');
+    }
+
+    function hideValidate(input) {
+        var thisAlert = $(input).parent();
+
+        $(thisAlert).removeClass('alert-validate');
+    }
+    
+    /*==================================================================
+    [ Show pass ]*/
+    var showPass = 0;
+    $('.btn-show-pass').on('click', function(){
+        if(showPass == 0) {
+            $(this).next('input').attr('type','text');
+            $(this).addClass('active');
+            showPass = 1;
+        }
+        else {
+            $(this).next('input').attr('type','password');
+            $(this).removeClass('active');
+            showPass = 0;
+        }
+        
+    });
+
+
+})(jQuery);

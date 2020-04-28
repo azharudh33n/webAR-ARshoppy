@@ -1,10 +1,27 @@
 <form>
     <div class="form-group">
       <label for="GLTFInput">Custom GLTF model url</label><br>
-      <input type="text" class="form-control" id="GLTFInput" placeholder="Submit Link">
+      <input type="text" class="form-control" id="GLTFInput" placeholder="Submit Link"><br>
       <small id="GLTFHelp" class="form-text text-muted">Models Should be GLTF2.0 </small>
     </div>
 </form>    
+
+<button onclick="GLTFInput()">Try it</button>
+<input type= text id="namehere" onchange="GLTFInput()"><br>
+
+<script>
+
+    function GLTFInput() {
+var x = document.getElementById("GLTFInput").value;
+document.getElementById("namehere").value;
+
+    }
+
+</script>
+
+<br>
+<a class="button blue gradient crop ae-3" href="intent://LinkHere#Intent;scheme=https;package=com.google.android.googlequicksearchbox;action=android.intent.action.VIEW;S.browser_fallback_url=https://arshoppy.netlify.com/error.html;end;">Avocado</a>
+
 
 
 
